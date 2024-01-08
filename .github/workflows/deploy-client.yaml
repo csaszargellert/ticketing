@@ -1,0 +1,54 @@
+name: Deploy client
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'client/**'
+
+env:
+  CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
+  CLUSTER_REGION: ${{ secrets.CLUSTER_REGION }}
+  GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+  GOOGLE_REGISTRY: ${{ secrets.GOOGLE_REGISTRY }}
+  GOOGLE_REGISTRY_REGION: ${{ secrets.REGISTRY_REGION }}
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup, Build, Publish, and Deploy
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      # Configure Workload Identity Federation and generate an access token.
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GKE_SA_KEY }}'
+
+      - uses: simenandre/setup-gke-gcloud-auth-plugin@v1
+
+      - name: Configure docker
+        run: |
+          gcloud auth configure-docker "$GOOGLE_REGISTRY_REGION-docker.pkg.dev"
+
+      - name: Docker build image
+        run: |
+          docker build -t "$GOOGLE_REGISTRY_REGION-docker.pkg.dev/$GOOGLE_PROJECT/$GOOGLE_REGISTRY/client:latest" ./client
+
+      - name: Docker push image
+        run: |
+          docker push "$GOOGLE_REGISTRY_REGION-docker.pkg.dev/$GOOGLE_PROJECT/$GOOGLE_REGISTRY/client:latest"
+
+      - name: Deploy
+        run: |
+          gcloud container clusters get-credentials $CLUSTER_NAME --region $CLUSTER_REGION --project $GOOGLE_PROJECT
+          sed -i "s/GOOGLE_REGISTRY_REGION/$GOOGLE_REGISTRY_REGION/g" infra/k8s-prod/client-depl.yaml
+          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" infra/k8s-prod/client-depl.yaml
+          sed -i "s/GOOGLE_REGISTRY/$GOOGLE_REGISTRY/g" infra/k8s-prod/client-depl.yaml
+          kubectl rollout restart deployment client-depl

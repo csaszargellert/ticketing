@@ -1,11 +1,11 @@
-name: Deploy auth
+name: Deploy expiration
 
 on:
   push:
     branches:
       - 'master'
     paths:
-      - 'auth/**'
+      - 'expiration/**'
 
 env:
   CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
@@ -31,22 +31,24 @@ jobs:
         with:
           credentials_json: '${{ secrets.GKE_SA_KEY }}'
 
+      - uses: simenandre/setup-gke-gcloud-auth-plugin@v1
+
       - name: Configure docker
         run: |
           gcloud auth configure-docker "$GOOGLE_REGISTRY_REGION-docker.pkg.dev"
 
       - name: Docker build image
         run: |
-          docker build -t "$GOOGLE_REGISTRY_REGION-docker.pkg.dev/$GOOGLE_PROJECT/$GOOGLE_REGISTRY/auth:latest" ./auth
+          docker build -t "$GOOGLE_REGISTRY_REGION-docker.pkg.dev/$GOOGLE_PROJECT/$GOOGLE_REGISTRY/expiration:latest" ./expiration
 
       - name: Docker push image
         run: |
-          docker push "$GOOGLE_REGISTRY_REGION-docker.pkg.dev/$GOOGLE_PROJECT/$GOOGLE_REGISTRY/auth:latest"
+          docker push "$GOOGLE_REGISTRY_REGION-docker.pkg.dev/$GOOGLE_PROJECT/$GOOGLE_REGISTRY/expiration:latest"
 
       - name: Deploy
         run: |
           gcloud container clusters get-credentials $CLUSTER_NAME --region $CLUSTER_REGION --project $GOOGLE_PROJECT
-          sed -i "s/GOOGLE_REGISTRY_REGION/$GOOGLE_REGISTRY_REGION/g" infra/k8s-prod/auth-depl.yaml
-          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" infra/k8s-prod/auth-depl.yaml
-          sed -i "s/GOOGLE_REGISTRY/$GOOGLE_REGISTRY/g" infra/k8s-prod/auth-depl.yaml
-          kubectl rollout restart deployment auth-depl
+          sed -i "s/GOOGLE_REGISTRY_REGION/$GOOGLE_REGISTRY_REGION/g" infra/k8s-prod/expiration-depl.yaml
+          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" infra/k8s-prod/expiration-depl.yaml
+          sed -i "s/GOOGLE_REGISTRY/$GOOGLE_REGISTRY/g" infra/k8s-prod/expiration-depl.yaml
+          kubectl rollout restart deployment expiration-depl
