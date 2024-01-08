@@ -3,63 +3,55 @@ kind: Config
 deploy:
   kubectl:
     manifests:
-      - ./infra/k8s/*
+      - ./infra/k8s-dev/*
 build:
   local:
     push: false
-  # googleCloudBuild:
-  #   projectId: ticketing-dev-410110
   artifacts:
-    # - image: us.gcr.io/ticketing-dev-410110/auth
     - image: csaszargellert/auth
       context: auth
       docker:
-        dockerfile: Dockerfile
+        dockerfile: Dockerfile.dev
       sync:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    # - image: us.gcr.io/ticketing-dev-410110/client
     - image: csaszargellert/client
       context: client
       docker:
-        dockerfile: Dockerfile
+        dockerfile: Dockerfile.dev
       sync:
         manual:
           - src: 'src/**/*.js'
             dest: .
-    # - image: us.gcr.io/ticketing-dev-410110/tickets
     - image: csaszargellert/tickets
       context: tickets
       docker:
-        dockerfile: Dockerfile
+        dockerfile: Dockerfile.dev
       sync:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    # - image: us.gcr.io/ticketing-dev-410110/orders
     - image: csaszargellert/orders
       context: orders
       docker:
-        dockerfile: Dockerfile
+        dockerfile: Dockerfile.dev
       sync:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    # - image: us.gcr.io/ticketing-dev-410110/expiration
     - image: csaszargellert/expiration
       context: expiration
       docker:
-        dockerfile: Dockerfile
+        dockerfile: Dockerfile.dev
       sync:
         manual:
           - src: 'src/**/*.ts'
             dest: .
-    # - image: us.gcr.io/ticketing-dev-410110/payment
     - image: csaszargellert/payment
       context: payment
       docker:
-        dockerfile: Dockerfile
+        dockerfile: Dockerfile.dev
       sync:
         manual:
           - src: 'src/**/*.ts'

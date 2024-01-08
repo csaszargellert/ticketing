@@ -1,21 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: tickets-depl
+  name: payment-depl
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: tickets
+      app: payment
   template:
     metadata:
       labels:
-        app: tickets
+        app: payment
     spec:
       containers:
-        - name: tickets
-          # image: us.gcr.io/ticketing-dev-410110/tickets
-          image: csaszargellert/tickets
+        - name: payment
+          image: us.gcr.io/ticketing-dev-410110/payment
           env:
             - name: NATS_CLIENT_ID
               valueFrom:
@@ -26,22 +25,27 @@ spec:
             - name: NATS_SERVER_URL
               value: 'http://nats-srv:4222'
             - name: DB_URI
-              value: 'mongodb://tickets-mongo-srv:27017/tickets'
+              value: 'mongodb://payment-mongo-srv:27017/payment'
             - name: JWT_KEY
               valueFrom:
                 secretKeyRef:
                   name: json-secret
                   key: JSON_WEB_TOKEN_KEY
+            - name: STRIPE_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: stripe-secret
+                  key: STRIPE_KEY
 ---
 apiVersion: v1
 kind: Service
 metadata:
-  name: tickets-srv
+  name: payment-srv
 spec:
   selector:
-    app: tickets
+    app: payment
   ports:
-    - name: tickets
+    - name: payment
       protocol: TCP
       port: 3000
       targetPort: 3000
