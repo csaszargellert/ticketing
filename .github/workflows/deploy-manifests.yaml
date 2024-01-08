@@ -1,0 +1,34 @@
+name: Deploy manifests
+
+on:
+  push:
+    branches:
+      - 'master'
+    paths: 
+      - 'infra/k8s-prod/**'
+
+env:
+  CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
+  CLUSTER_REGION: ${{ secrets.CLUSTER_REGION }}
+  GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+
+jobs:
+  setup-build-publish-deploy:
+    name: Setup And Apply
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - id: 'auth'
+      name: 'Authenticate to Google Cloud'
+      uses: 'google-github-actions/auth@v2'
+      with:
+        credentials_json: '${{ secrets.GKE_SA_KEY }}'
+
+    - name: Apply
+      run: |
+        gcloud container clusters get-credentials $CLUSTER_NAME --region $CLUSTER_REGION --project $GOOGLE_PROJECT
+        kubectl apply -f infra/k8s-prod
