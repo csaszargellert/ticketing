@@ -4,7 +4,7 @@ on:
   push:
     branches:
       - 'master'
-    paths: 
+    paths:
       - 'auth/**'
 
 env:
@@ -21,32 +21,32 @@ jobs:
     environment: production
 
     steps:
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    # Configure Workload Identity Federation and generate an access token.
-    - id: 'auth'
-      name: 'Authenticate to Google Cloud'
-      uses: 'google-github-actions/auth@v2'
-      with:
-        credentials_json: '${{ secrets.GKE_SA_KEY }}'
+      # Configure Workload Identity Federation and generate an access token.
+      - id: 'auth'
+        name: 'Authenticate to Google Cloud'
+        uses: 'google-github-actions/auth@v2'
+        with:
+          credentials_json: '${{ secrets.GKE_SA_KEY }}'
 
-    - name: Configure docker
-      run: |
-        gcloud auth configure-docker "$GOOGLE_REGISTRY_REGION-docker.pkg.dev"
-                
-    - name: Docker build image
-      run: |
-        docker build -t "$GOOGLE_REGISTRY_REGION-docker.pkg.dev/$GOOGLE_PROJECT/$GOOGLE_REGISTRY/auth:latest" ./auth
+      - name: Configure docker
+        run: |
+          gcloud auth configure-docker "$GOOGLE_REGISTRY_REGION-docker.pkg.dev"
 
-    - name: Docker push image
-      run: |
-        docker push "$GOOGLE_REGISTRY_REGION-docker.pkg.dev/$GOOGLE_PROJECT/$GOOGLE_REGISTRY/auth:latest"
+      - name: Docker build image
+        run: |
+          docker build -t "$GOOGLE_REGISTRY_REGION-docker.pkg.dev/$GOOGLE_PROJECT/$GOOGLE_REGISTRY/auth:latest" ./auth
 
-    - name: Deploy
-      run: |
-        gcloud container clusters get-credentials $CLUSTER_NAME --region $CLUSTER_REGION --project $GOOGLE_PROJECT
-        sed -i "s/GOOGLE_REGISTRY_REGION/$GOOGLE_REGISTRY_REGION/g" infra/k8s-prod/auth-depl.yaml
-        sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" infra/k8s-prod/auth-depl.yaml
-        sed -i "s/GOOGLE_REGISTRY/$GOOGLE_REGISTRY/g" infra/k8s-prod/auth-depl.yaml
-        kubectl rollout restart deployment auth-depl
+      - name: Docker push image
+        run: |
+          docker push "$GOOGLE_REGISTRY_REGION-docker.pkg.dev/$GOOGLE_PROJECT/$GOOGLE_REGISTRY/auth:latest"
+
+      - name: Deploy
+        run: |
+          gcloud container clusters get-credentials $CLUSTER_NAME --region $CLUSTER_REGION --project $GOOGLE_PROJECT
+          sed -i "s/GOOGLE_REGISTRY_REGION/$GOOGLE_REGISTRY_REGION/g" infra/k8s-prod/auth-depl.yaml
+          sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" infra/k8s-prod/auth-depl.yaml
+          sed -i "s/GOOGLE_REGISTRY/$GOOGLE_REGISTRY/g" infra/k8s-prod/auth-depl.yaml
+          kubectl rollout restart deployment auth-depl
