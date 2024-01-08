@@ -1,0 +1,3 @@
+[submodules "common"]
+  path = common
+  url = https://github.com/csaszargellert/ticketing-common
