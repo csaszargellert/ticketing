@@ -7,7 +7,7 @@ metadata:
 spec:
   ingressClassName: nginx
   rules:
-    - host: gellert-ticketing.online
+    - host: www.gellert-ticketing.online
       http:
         paths:
           - path: /api/users/?(.*)
