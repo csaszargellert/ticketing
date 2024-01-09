@@ -11,6 +11,8 @@ env:
   CLUSTER_NAME: ${{ secrets.CLUSTER_NAME }}
   CLUSTER_REGION: ${{ secrets.CLUSTER_REGION }}
   GOOGLE_PROJECT: ${{ secrets.GOOGLE_PROJECT }}
+  GOOGLE_REGISTRY: ${{ secrets.GOOGLE_REGISTRY }}
+  GOOGLE_REGISTRY_REGION: ${{ secrets.REGISTRY_REGION }}
 
 jobs:
   setup-apply:
@@ -33,4 +35,7 @@ jobs:
       - name: Apply
         run: |
           gcloud container clusters get-credentials $CLUSTER_NAME --region $CLUSTER_REGION --project $GOOGLE_PROJECT
+          find ./infra/k8s-prod -type f -name '*.yaml' -exec sed -i "s/GOOGLE_REGISTRY_REGION/$GOOGLE_REGISTRY_REGION/g" {} \;
+          find ./infra/k8s-prod -type f -name '*.yaml' -exec sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" {} \;
+          find ./infra/k8s-prod -type f -name '*.yaml' -exec sed -i "s/GOOGLE_REGISTRY/$GOOGLE_REGISTRY/g" {} \;
           kubectl apply -f infra/k8s-prod
