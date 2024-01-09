@@ -18,7 +18,7 @@ app.use(
     signed: false,
   })
 );
-
+console.log('CHANGE');
 app.use(CurrentUserRouter);
 app.use(SignoutRouter);
 app.use(SigninRouter);
