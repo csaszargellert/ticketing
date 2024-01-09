@@ -12,6 +12,7 @@ import {
 import natsWrapper from './nats-wrapper';
 import { newOrderRouter } from './routes/new-order';
 import { cancelOrderRouter } from './routes/cancel-order';
+
 import { getOrderRouter } from './routes/get-order';
 import { getAllOrdersRouter } from './routes/get-all-orders';
 
