@@ -23,7 +23,7 @@ function Signup() {
 
   return (
     <form onSubmit={onSubmit}>
-      <h1>Sign Up</h1>
+      <h2>Sign Up</h2>
       <div className="form-group">
         <label>Email Address</label>
         <input

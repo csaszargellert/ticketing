@@ -41,6 +41,7 @@ router.post(
       currency: 'usd',
       source: req.body.token,
     });
+
     const payment = Payment.build({
       orderId: req.body.orderId,
       stripeId: charge.id,
