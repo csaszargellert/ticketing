@@ -1,1 +1,1 @@
-[Live site]("http://www.gellert-ticketing.online/"): 
+[Live site](http://www.gellert-ticketing.online): 
