@@ -13,6 +13,7 @@ export class Password {
       salt,
       Password.keyLength
     )) as Buffer;
+
     return `${buf.toString('hex')}.${salt}`;
   }
 
