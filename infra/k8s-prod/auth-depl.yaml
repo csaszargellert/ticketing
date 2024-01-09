@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: auth
-          image: europe-central2-docker.pkg.dev/ticketing-dev-410110/ticketing-registry/auth:latest
+          image: GOOGLE_REGISTRY_REGION-docker.pkg.dev/GOOGLE_PROJECT/GOOGLE_REGISTRY/auth:latest
           env:
             - name: DB_URI
               value: 'mongodb://auth-mongo-srv:27017/users'

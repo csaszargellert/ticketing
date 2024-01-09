@@ -51,4 +51,4 @@ jobs:
           sed -i "s/GOOGLE_REGISTRY_REGION/$GOOGLE_REGISTRY_REGION/g" infra/k8s-prod/expiration-depl.yaml
           sed -i "s/GOOGLE_PROJECT/$GOOGLE_PROJECT/g" infra/k8s-prod/expiration-depl.yaml
           sed -i "s/GOOGLE_REGISTRY/$GOOGLE_REGISTRY/g" infra/k8s-prod/expiration-depl.yaml
-          kubectl rollout restart deployment expiration-depl
+          kubectl apply -f infra/k8s-prod/expiration-depl.yaml
