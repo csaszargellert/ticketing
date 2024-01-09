@@ -5,8 +5,9 @@ export const buildClient = function ({ req }) {
     return axios.create({
       baseURL: 'http://www.gellert-ticketing.online',
       headers: req.headers,
+      withCredentials: true
     });
   } else {
-    return axios.create();
+    return axios.create({ withCredentials: true });
   }
 };
