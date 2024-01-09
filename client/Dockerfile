@@ -1,4 +1,4 @@
-FROM node:21-apline AS dependencies
+FROM node:21-alpine AS dependencies
 WORKDIR /app
 COPY ./package*.json ./
 RUN npm ci --production
