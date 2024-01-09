@@ -48,7 +48,8 @@ jobs:
       - name: Deploy
         run: |
           gcloud container clusters get-credentials $CLUSTER_NAME --region $CLUSTER_REGION --project $GOOGLE_PROJECT
-          sed -i 's/GOOGLE_REGISTRY_REGION/$GOOGLE_REGISTRY_REGION/g' ./infra/k8s-prod/auth-depl.yaml
-          sed -i 's/GOOGLE_PROJECT/$GOOGLE_PROJECT/g' ./infra/k8s-prod/auth-depl.yaml
-          sed -i 's/GOOGLE_REGISTRY/$GOOGLE_REGISTRY/g' ./infra/k8s-prod/auth-depl.yaml
+          sed -i 's/GOOGLE_REGISTRY_REGION/${{ env.GOOGLE_REGISTRY_REGION }}/g' ./infra/k8s-prod/auth-depl.yaml
+          sed -i 's/GOOGLE_PROJECT/${{ env.GOOGLE_PROJECT }}/g' ./infra/k8s-prod/auth-depl.yaml
+          sed -i 's/GOOGLE_REGISTRY/${{ env.GOOGLE_REGISTRY }}/g' ./infra/k8s-prod/auth-depl.yaml
+          cat ./infra/k8s-prod/auth-depl.yaml
           kubectl rollout restart deployment auth-depl
