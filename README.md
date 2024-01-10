@@ -120,6 +120,28 @@
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- USAGE -->
+## Usage
+
+You can signup with any madeup email account and password. 
+<br />
+<br />
+***This application does not implement tls certificates therefore any request is sent over the internet as plain text!***
+<br />
+<br />
+Stripe is only working in test mode.
+<br />
+<br />
+**Card Number**: *4242 4242 4242 4242* 
+<br />
+**Expiration date**: *future date (ex: 10/27)*
+<br />
+**CVC**: *random 3-digit number (ex: 235)*
+<br />
+<img src="images/card-popup.png" />
+<img src="images/credit-card-details.png" />
+
+
 <!-- CONTACT -->
 ## Contact
 
