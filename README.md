@@ -41,7 +41,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<a href="http://gellert-ticketing.online"><img src="images/main-page.png"/></a>
+<a href="http://www.gellert-ticketing.online"><img src="images/main-page.png"/></a>
 <div aling="center">
   <h3 align="center">Ticketing</h3>
   
