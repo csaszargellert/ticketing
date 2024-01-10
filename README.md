@@ -12,11 +12,6 @@
     <img src="images/logo.png" alt="Logo" width="80" height="80">
   </a>
   
-  <h3 align="center">Ticketing</h3>
-  
-  <p align="center">
-    This website allows users to sell their unwanted tickets of concerts. Others can reserve tickets for 15 minutes and decide if they want to proceed with the purchase. Once reserved or purchased, the ticket is inaccessible, only the buyer can view it.
-  </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
@@ -46,8 +41,17 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[![Product Name Screen Shot][product-screenshot]](http://www.gellert-ticketing.online)
-<p align="center">This application </p>
+<a href="http://gellert-ticketing.online"><img src="images/main-page.png"/></a>
+<div aling="center">
+  <h3 align="center">Ticketing</h3>
+  
+  <p>
+    This website allows users to sell their unwanted tickets of concerts. Others can reserve tickets for 15 minutes and decide if they want to proceed with the purchase. Once reserved or purchased, the ticket is inaccessible, only the buyer can view it.
+  </p>
+  <p>
+    The application is built with the concept of microservices.
+  </p>
+</div>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -74,6 +78,7 @@
 * [Docker](https://www.docker.com/) installed
 * [Kubernetes](https://kubernetes.io/) installed and a running cluster 
 * [Skaffold](https://skaffold.dev/) installed
+* [Stripe](https://stripe.com/) account
 
 ### Setup
 
@@ -92,16 +97,16 @@
      ```
    <p>You can get your stripe secret key as shown below</p>
    <img src="images/stripe-secret-key.png" alt="stripe page" />
-3. Install [ingress-nginx](https://kubernetes.github.io/ingress-nginx/deploy/) by selecting appropriate cluster
+3. <p>Install <a href="https://kubernetes.github.io/ingress-nginx/deploy/">ingress-nginx</a> by selecting appropriate cluster</p>
    <img src="images/ingress-nginx.png" alt="ingress nginx deployment page" />
-4. Change [stripe publishable key](https://github.com/csaszargellert/ticketing/blob/master/client/src/pages/orders/%5BorderId%5D.js) in client folder
+4. <p>Change <a href="https://github.com/csaszargellert/ticketing/blob/master/client/src/pages/orders/%5BorderId%5D.js">stripe publishable key</a> in client folder</p>
    <img src="images/stripe-publishable-key.png" alt="code snippet" />
-5. Change [base url](https://github.com/csaszargellert/ticketing/blob/master/client/src/api/buildClient.js) in client folder to http://ingress-nginx-srv
+5. <p>Change <a href="https://github.com/csaszargellert/ticketing/blob/master/client/src/api/buildClient.js">base url</a> in client folder to http://ingress-nginx-srv</p>
    <img src="images/base-url.png" alt="code snippet" />
-6. Add the following line to the end of *hosts* file:
+6. Add the following line at the end of *hosts* file:
    <br />
    **127.0.0.1 ticketing.dev**
-   * If you are on Windows, open notepad with administrator priviliges and open C:\Windows\System32\drivers\etc\hosts
+   * <p>If you are on Windows, open notepad with administrator priviliges and go to C:\Windows\System32\drivers\etc\hosts</p>
      <img src="images/hosts.png" alt="how to open hosts file on windows" />
    * If you are on Linux/MacOS, go to /etc/hosts
 8. Initialize skaffold
@@ -156,3 +161,4 @@ Live site: [gellert-ticketing.online](https://www.gellert-ticketing.online/)
 [Typescript-url]: https://www.typescriptlang.org/
 [Express.js]: https://img.shields.io/badge/express.js-%23404d59.svg?style=for-the-badge&logo=express&logoColor=%2361DAFB
 [Express-url]: https://expressjs.com/
+[product-screenshot]: images/main-page.png
